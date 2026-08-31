@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Widget</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 400px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background: #f4f6f8;
+  }
+
+  #widget {
+    box-sizing: border-box;
+    width: 100%;
+    height: 400px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #widget .widget-header {
+    padding: 16px 20px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  #widget .widget-body {
+    flex: 1;
+    padding: 16px;
+    display: grid;
+    gap: 12px;
+    overflow: auto;
+  }
+
+  .tile {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #333;
+  }
+
+  /* Iframe layout: compact single column stack */
+  #widget.is-iframe .widget-header {
+    background: #2f6fed;
+  }
+
+  #widget.is-iframe .widget-body {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(3, 1fr);
+  }
+
+  /* Non-iframe layout: wider grid of tiles */
+  #widget.is-standalone .widget-header {
+    background: #451f9d;
+  }
+
+  #widget.is-standalone .widget-body {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+  }
+</style>
+</head>
+<body>
+
+<div id="widget">
+  <div class="widget-header" id="widget-title"></div>
+  <div class="widget-body" id="widget-body"></div>
+</div>
+
+<script>
+  (function () {
+    var isFramed = window.self !== window.top;
+    var widget = document.getElementById('widget');
+    var title = document.getElementById('widget-title');
+    var body = document.getElementById('widget-body');
+
+    if (isFramed) {
+      widget.classList.add('is-iframe');
+      title.textContent = 'iframe';
+      var tileCount = 3;
+    } else {
+      widget.classList.add('is-standalone');
+      title.textContent = 'non-iframe';
+      var tileCount = 6;
+    }
+
+    for (var i = 1; i <= tileCount; i++) {
+      var tile = document.createElement('div');
+      tile.className = 'tile';
+      tile.textContent = 'Tile ' + i;
+      body.appendChild(tile);
+    }
+  })();
+</script>
+
+</body>
+</html>
